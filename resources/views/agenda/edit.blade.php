@@ -1,0 +1,60 @@
+@extends('layouts.dashboard')
+
+@section('container')
+    <div class="container mb-5">
+       <div class="row bg-white mt-4 pt-3 p-1 rounded-3 shadow-sm">
+         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+               <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
+               <li class="breadcrumb-item"><a href="/agenda">Agenda</a></li>
+               <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+            </ol>
+          </nav>
+       </div>
+       <div class="row bg-white mt-4 pt-3 p-1 rounded-3 shadow-sm">
+          <div class="d-flex justify-content-between">
+            <div>
+                <a href="/surat-masuk">< Kembali ke halaman Agenda</a>
+            </div>
+         </div>
+         <h3 class="my-4">{{ $title }}</h3>
+        <form method="post" action="/agenda/{{ $agenda->id }}" enctype="multipart/form-data">
+          @method('put')
+          @csrf
+          @csrf
+          <input type="hidden" class="form-control" id="user_id" name="user_id" value="{{ auth()->user()->id }}" readonly>
+          <div class="mb-3">
+            <label for="tanggal" class="form-label"><i class="bi bi-calendar-minus"></i> Tanggal</label>
+            <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" required value="{{ old('tanggal', $agenda->tanggal) }}">
+            @error('tanggal')
+                <div class="invalid-feedback">
+                  {{ $message }}
+                </div>
+            @enderror
+          </div>
+          <div class="mb-3">
+            <label for="nama" class="form-label"><i class="bi bi-list-ul"></i> Nama</label>
+            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" required value="{{ old('nama', $agenda->nama) }}">
+            @error('nama')
+                <div class="invalid-feedback">
+                  {{ $message }}
+                </div>
+            @enderror
+          </div>
+          <div class="mb-3">
+            <label for="target" class="form-label"><i class="bi bi-mailbox2"></i> Asal Surat</label>
+            <input type="text" class="form-control @error('target') is-invalid @enderror" id="target" name="target" required value="{{ old('target',$agenda->target) }}">
+            @error('target')
+                <div class="invalid-feedback">
+                  {{ $message }}
+                </div>
+            @enderror
+         </div>
+          <div class="d-flex justify-content-end">
+            <a href="/surat-masuk" class="btn btn-secondary mx-4">Cancel</a>
+            <button type="submit" class="btn btn-info">Save</button> 
+          </div>
+        </form>
+      </div>
+    </div>
+@endsection
